@@ -31,7 +31,7 @@ const ARScene = ({ videoElement }: ARSceneProps) => {
   const sceneRef = useRef<THREE.Scene>(null);
   
   // Preload textures
-  const woodTexture = useTexture("/textures/wood.jpg");
+  const woodTexture = useTexture("/ARobjPlacement/textures/wood.jpg");
   
   useEffect(() => {
     if (videoElement) {
