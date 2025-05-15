@@ -26,13 +26,27 @@ const ARScene = ({ videoElement }: ARSceneProps) => {
   
   const [isReady, setIsReady] = useState(false);
   const [hitPose, setHitPose] = useState<THREE.Matrix4 | null>(null);
+  const [woodTexture, setWoodTexture] = useState<THREE.Texture | null>(null);
   
   // Reference to the scene for raycasting
   const sceneRef = useRef<THREE.Scene>(null);
   
-  // Preload textures
-  const woodTexture = useTexture("/ARobjPlacement/textures/wood.jpg");
-  
+  // Load texture manually
+  useEffect(() => {
+    const textureLoader = new THREE.TextureLoader();
+    textureLoader.load(
+      `${import.meta.env.BASE_URL}textures/wood.jpg`,
+      (texture) => {
+        setWoodTexture(texture);
+      },
+      undefined,
+      (error) => {
+        console.error('Error loading texture:', error);
+        toast.error("Failed to load texture");
+      }
+    );
+  }, []);
+
   useEffect(() => {
     if (videoElement) {
       setIsReady(true);
@@ -118,7 +132,7 @@ const ARScene = ({ videoElement }: ARSceneProps) => {
     }
   });
 
-  if (!isReady) return null;
+  if (!isReady || !woodTexture) return null;
 
   return (
     <>
